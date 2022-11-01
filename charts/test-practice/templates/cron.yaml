@@ -26,7 +26,7 @@ spec:
           volumes:
           - name: var-log
             persistentVolumeClaim:
-              claimName: volume-pvc
+              claimName: {{ .Release.Name }}-pvc
           restartPolicy: OnFailure
   schedule: '*/5 * * * *'
 status: {}
