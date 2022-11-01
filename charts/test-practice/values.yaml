@@ -1,4 +1,4 @@
 secret:
   create: true
-  permissionPublic: 600
-  permissionPrivate: 600
+  permissionPublic: 0600
+  permissionPrivate: 0600
