@@ -6,8 +6,9 @@
           items:
           - key: ssh-private-key
             path: id_rsa
+            mode: {{ .Values.secret.permissionPrivate }}
           - key: ssh-public-key
             path: id_rsa.pub
-          defaultMode: {{ .Values.secret.defaultMode }}
+            mode: {{ .Values.secret.permissionPublic }}
 {{- end }}
 {{- end }}

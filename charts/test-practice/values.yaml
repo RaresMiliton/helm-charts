@@ -1,3 +1,4 @@
 secret:
   create: true
-  defaultMode: 384
+  permissionPublic: 600
+  permissionPrivate: 600
