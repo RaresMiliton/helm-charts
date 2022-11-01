@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nx
+  name: nx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nx
+    spec:
+      initContainers:
+      - image: busybox
+        name: init-logs
+        command: ["/bin/sh"]
+        args: ["-c", "mkdir -p /var/log/test-logs"]
+        volumeMounts:
+        - name: var-log
+          mountPath: /var/log
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+        - name: var-log
+          mountPath: /usr/share/nginx/html
+        - name: ssh-key
+          mountPath: ".ssh"
+      - name: sidecar
+        image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo $(date -u) 'Hi I am from Sidecar container' >> /var/log/index.html; echo 'Hey' >> /var/log/test-logs/$(date -u).txt; sleep 5;done"]
+        volumeMounts:
+        - name: var-log
+          mountPath: /var/log
+      volumes:
+      - name: var-log
+        persistentVolumeClaim:
+          claimName: volume-pvc
+      - name: ssh-key
+        secret:
+          secretName: ssh-data
+          items:
+          - key: ssh-private-key
+            path: id_rsa
+          - key: ssh-public-key
+            path: id_rsa.pub
+          defaultMode: 0600
+status: {}

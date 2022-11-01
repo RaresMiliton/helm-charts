@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: log-cronjob
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: log-cronjob
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: busybox
+            name: log-cronjob
+            args:
+            - /bin/sh
+            - -c
+            - find /var/log/test-logs/ -type f -amin +5 -exec rm {} \;
+            volumeMounts:
+            - name: var-log
+              mountPath: /var/log
+          volumes:
+          - name: var-log
+            persistentVolumeClaim:
+              claimName: volume-pvc
+          restartPolicy: OnFailure
+  schedule: '*/5 * * * *'
+status: {}
