@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: volume-pv
+  name: {{ .Release.Name }}-pv
 spec:
   capacity:
     storage: 100Mi

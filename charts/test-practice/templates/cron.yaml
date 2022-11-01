@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   creationTimestamp: null
-  name: log-cronjob
+  name: {{ .Release.Name }}-cronjob
 spec:
   jobTemplate:
     metadata:

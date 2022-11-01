@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: nx
-  name: nx
+    app: {{ .Release.Name }}
+  name: {{ .Release.Name }}
 spec:
   replicas: 3
   selector:
@@ -34,8 +34,10 @@ spec:
         volumeMounts:
         - name: var-log
           mountPath: /usr/share/nginx/html
+        {{- if .Values.secret.create }}
         - name: ssh-key
           mountPath: ".ssh"
+        {{- end }}
       - name: sidecar
         image: busybox
         command: ["/bin/sh"]
@@ -47,6 +49,7 @@ spec:
       - name: var-log
         persistentVolumeClaim:
           claimName: volume-pvc
+      {{- if .Values.secret.create }}
       - name: ssh-key
         secret:
           secretName: ssh-data
@@ -56,4 +59,5 @@ spec:
           - key: ssh-public-key
             path: id_rsa.pub
           defaultMode: 0600
+      {{- end }}
 status: {}
