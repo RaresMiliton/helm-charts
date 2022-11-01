@@ -8,6 +8,6 @@
             path: id_rsa
           - key: ssh-public-key
             path: id_rsa.pub
-          defaultMode: 600
+          defaultMode: {{ .Values.secret.defaultMode }}
 {{- end }}
 {{- end }}
