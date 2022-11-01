@@ -48,6 +48,6 @@ spec:
       volumes:
       - name: var-log
         persistentVolumeClaim:
-          claimName: volume-pvc
+          claimName: {{ .Release.Name }}-pvc
       {{ include "secrets-volume" . }}
 status: {}
