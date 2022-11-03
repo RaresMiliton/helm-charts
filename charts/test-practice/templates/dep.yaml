@@ -25,6 +25,12 @@ spec:
         volumeMounts:
         - name: var-log
           mountPath: /var/log
+      - image: alpine/git
+        name: git-repo
+        command: ["/bin/sh", "-c", "git clone https://github.com/zpqrtbnk/test-repo.git /home/data/repos"]
+        volumeMounts:
+        - name: get-repo
+          mountPath: "/home/data/repos"
       containers:
       - image: nginx
         name: nginx
@@ -49,5 +55,7 @@ spec:
       - name: var-log
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-pvc
+      - name: get-repo
+        emptyDir: {}
       {{ include "secrets-volume" . }}
 status: {}
