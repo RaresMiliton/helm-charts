@@ -40,6 +40,8 @@ spec:
         volumeMounts:
         - name: var-log
           mountPath: /usr/share/nginx/html
+        - name: get-repo
+          mountPath: "/home/data/repos"
         {{- if .Values.secret.create }}
         - name: ssh-key
           mountPath: ".ssh"
